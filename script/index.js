@@ -8,17 +8,21 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
+
+// Its to load environment variables
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey:
-    "AIzaSyCf3OuJ3LfQIOrY_ytB-VMwPTm2jaKIBJ4",
-  authDomain: "ubercoders.firebaseapp.com",
-  projectId: "ubercoders",
-  storageBucket: "ubercoders.firebasestorage.app",
-  messagingSenderId: "648246074997",
-  appId:
-    "1:648246074997:web:d8724fc2c7aed70c6ee23c",
-  measurementId: "G-02D2QNJ8P7",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -45,8 +49,17 @@ signupForm.addEventListener(
     ).value;
 
     function validatePassword(password) {
-      // At least 6 characters long
-      return password.length >= 6;
+      const minLength = 6;
+      const hasNumber = /\d/;
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+      const hasUpperCase = /[A-Z]/;
+
+      return (
+        password.length >= minLength &&
+        hasNumber.test(password) &&
+        hasSpecialChar.test(password) &&
+        hasUpperCase.test(password)
+  );
     }
 
     if (!validatePassword(password)) {
